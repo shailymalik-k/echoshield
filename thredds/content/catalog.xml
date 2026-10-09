@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  EchoShield THREDDS catalog.
+
+  Serves every NetCDF file found in /opt/data (mounted from
+  data/sample_netcdf) through OPeNDAP, WMS and HTTP download.
+  Scientific protocol serving is delegated to THREDDS itself;
+  EchoShield never implements OPeNDAP/WMS/WCS.
+-->
+<catalog xmlns="http://www.unidata.ucar.edu/namespaces/thredds/InvCatalog/v1.0"
+         xmlns:xlink="http://www.w3.org/1999/xlink"
+         version="1.0.1">
+
+  <service name="echoshieldAll" serviceType="Compound" base="">
+    <service name="opendap" serviceType="OPeNDAP" base="/thredds/dodsC/" />
+    <service name="httpserver" serviceType="HTTPServer" base="/thredds/fileServer/" />
+    <service name="wms" serviceType="WMS" base="/thredds/wms/" />
+  </service>
+
+  <datasetScan
+      name="EchoShield sample ocean data"
+      ID="echoshield/sample_netcdf"
+      path="sample_netcdf"
+      location="/opt/data">
+
+    <metadata inherited="true">
+      <serviceName>echoshieldAll</serviceName>
+      <authority>echoshield</authority>
+      <dataType>Grid</dataType>
+      <documentation type="summary">
+        Synthetic sample / small test NetCDF files mounted into the THREDDS
+        container. NOT real INCOIS operational data.
+      </documentation>
+    </metadata>
+
+    <filter>
+      <include regexp=".*\.nc$" />
+    </filter>
+
+    <sort>
+      <lexigraphicByName increasing="true" />
+    </sort>
+  </datasetScan>
+
+</catalog>
